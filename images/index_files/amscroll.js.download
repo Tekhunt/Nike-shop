@@ -1,0 +1,887 @@
+/*
+ * Amasty Scroll
+ *  
+ * @copyright   Copyright (c) 2009-2012 Amasty (http://www.amasty.com)
+ */
+
+
+
+function amscroll() {
+	
+	this.frameHeight = null;
+	
+	this.initialized = false;
+	
+	/*
+	 * Button action was set
+	 */
+	this.loaderSet = false;
+	
+	/*
+	 * Ignore flat that loader was set
+	 */
+	this.ignoreLoaderSetFlag = false;
+	
+	/*
+	 * Current page
+	 */
+	this.page = 1;
+	
+	/*
+	 * Amount of pages to load within curretn search/filters.
+	 */	
+	this.pagesCount = 0;
+	
+	/*
+	 * Top offset
+	 */
+	this.previousTop = 0;
+	
+	/*
+	 * Fetch
+	 */
+	this.pagesMultiplier = 3;
+	
+	/*
+	 * All pages loaded, now new pages to load
+	 */
+	this.pagesReached = false;
+	
+	/*
+	 * Navigation element
+	 */
+	this.navBarElement = null;
+	
+	/*
+	 * Holds amount of loaded pages
+	 */
+	this.loadedPagesNumbers = 1;
+	
+	/*
+	 * Url to make request
+	 */
+	this.url = '';
+	
+	this.placeHolderElement = null;
+	
+	/*
+	 * Ajax request can be done:
+	 * - auto - automatically
+	 * - button - on button click
+	 */
+	this.actionMode = 'auto';
+	
+	/*
+	 * Label on button
+	 */
+	this.loadingTextButton = '';
+	
+	/*
+	 * Path to loading image
+	 */
+	this.loadingImage = '';
+	
+	/*
+	 * Progress bar config
+	 */
+	this.progressbar = {};
+	
+	/*
+	 * Display page numbers or not
+	 */
+	this.pageNumbers = 0;
+	
+	this.loadNextStyle = '';
+	
+	this.init = function(params)
+	{
+		this.url = window.location.href.split('#')[0];
+		this.initialized = true;
+		this.loaderSet = false;
+		
+		this.destroyNavBarElement();
+		
+		if (params) {
+			for (param in params) {
+				this[param] = params[param];
+			}
+		}
+		
+		/*
+		 * Remove bottom toolbar
+		 */
+		var toolbar = $$(amscroll_toolbar_bottom)[0];
+		if (toolbar) {
+			$(toolbar).remove();
+		}
+		
+		/*
+		 * Hide pager
+		 */
+		$$(amscroll_pager).each(function(pager) {
+            $(pager).hide();
+        });
+						 
+		
+		/*
+		 * Get total pages count
+		 */
+		
+		this.pagesCount = this.getPagesCount();
+		
+		var el = $$(amscroll_product_container_group)[0];
+		/*
+		 * Render page frames
+		 */
+		if (el && this.pagesCount > 1 && el.select('.amscroll-page').length == 0) {
+			var i = 2;
+			while(i <= this.pagesCount) {
+				
+				/* Page Number */
+				if (this.pageNumbers == 1) {
+					var pageNumEl =  new Element('div', { 
+						'class': 'amscroll-page-num', 
+						'id' : 'amscroll-page-num-' + i
+					});
+					$(pageNumEl).update(this.page_text + i);
+					el.insert(pageNumEl, {position: 'content' });
+				}
+				
+				/* Page Frame */
+				var id = 'amscroll-page-' + i;
+				var element = new Element('div', { 
+					'class': 'amscroll-page', 
+					'id' : id,
+					'rel' : i
+				}).update('');
+				el.insert(element, {position: 'content'});
+				
+				i++;
+			}
+		}
+		
+		/*
+		 * Calculate frame height depending on loaded page
+		 */
+		this.getFrameHeight();
+		
+		
+		if (!this.page || this.page == 0) {
+			/*
+			 * Get page number from hash
+			 */	
+			var page = this.getUrlParam('page');
+			
+			if (page) {
+				
+				this.page = page;
+				
+				var me = this;
+				if (this.getFrameHeight()) {
+					$$('div.amscroll-page').each(function(item) {
+						var itemPage = parseInt($(item).readAttribute('rel'));
+						if (itemPage <= me.page) {
+							$(item).setStyle({height : me.getFrameHeight() + 'px'});
+							if (me.actionMode == 'button') {
+								me.ignoreLoaderSetFlag = true;
+								me.getLoadingPlaceholder(true, itemPage);
+							}
+						}
+					});
+				}
+				
+				if (this.actionMode == 'button') {
+					this.ignoreLoaderSetFlag = false;
+				}
+				
+				/*
+				 * Scroll to previous position
+				 */
+				window.scrollTo(0, this.getUrlParam('top'));
+				
+				
+				if (this.shouldLoadNextPage(this.page)) { 
+                    this.loadNextPage(this.page, true);
+                }
+				
+				/*
+				 * Remove flag that page was in history
+				 */
+				this.setHashParam('external', null);
+			}
+			
+			if (!this.page) {
+				this.page = 2;
+			}
+		}
+
+		Event.observe(window, "load", function(){
+			amscroll_correct_height();
+			setTimeout( function() { amscroll_correct_height(); } , 1000);
+			if (typeof jQuery != 'undefined') {
+				jQuery(window).resize(function(){
+					amscroll_correct_height();
+				});
+			}
+		});
+
+	};
+	
+	this.getFrameHeight = function()
+	{
+		if (this.frameHeight == null) {
+			var el = $$(amscroll_product_container_group)[0];
+			if (el && $(el).getHeight() > 50) {
+				this.frameHeight = $(el).getHeight();
+			} else {
+				this.frameHeight = 960;
+			}
+		}
+		return this.frameHeight - 50; // 50 for margins and paddings
+		
+	};
+	
+	/*
+	 * All pages were loaded
+	 */
+	this.limitReached = function()
+	{
+		return (this.loadedPagesNumbers == this.pagesCount);
+	};
+	
+	/*
+	 * Check that page "page" should be loaded.
+	 * Order of blocks is imporant
+	 */
+	this.shouldLoadNextPage = function(page)
+	{
+		/*
+		 * If page is not loaded yet or not in loading - allow
+		 
+        if(page > this.loadedPagesNumbers + 1){
+            this.loadNextPage(this.loadedPagesNumbers + 1)
+            return false;    
+        }  */
+		var ret = false;
+		$$('div.amscroll-page').each(function(item) {	
+			if (parseInt($(item).readAttribute('rel')) == page && !$(item).hasClassName('loaded') && !$(item).hasClassName('loading')) {
+				ret = true;
+			}
+		});
+		if (ret) {
+			return true;
+		}
+		
+		/*
+		 * Page should be loaded taking into account height and current postion
+		 */
+	    if (document.viewport) {
+	        var top = document.viewport.getScrollOffsets().top;
+	        var height = document.viewport.getHeight();
+	        
+	        var docHeight = Math.max(
+	        		Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+	        		Math.max(document.body.clientHeight, document.documentElement.clientHeight),
+	                Math.max(document.body.offsetHeight, document.documentElement.offsetHeight) 
+	        );
+	        
+	        return (docHeight - top) <= (this.pagesMultiplier * height);
+	    }
+		
+		/*
+		 * Limit reached - loading should be stopped
+		 */
+		if (this.limitReached()) {
+			return false;
+		}
+		
+		return true;
+	};
+	
+	this.destroyNavBarElement = function()
+	{
+		if ($('amscroll-navbar')) {
+			$('amscroll-navbar').remove();
+		}
+		this.navBarElement = null;
+	};
+	
+	this.renderPaginator = function(current)
+	{
+		var element = this.getNavBarElement();
+		if (element) {
+			if (current > 1 && current <= this.pagesCount && this.loadedPagesNumbers > 1) {
+				element.style.display = 'block';
+				var html = '<div class="amscroll-top">';
+				var str = this.page_of_text;
+				str = str.replace('{0}', current).replace('{1}', this.pagesCount);
+				html += '<span>' + str + '</span>';
+				html += '<a href="#" class="amscroll-navbar-link"></a></div>';
+				element.update(html);
+			} else {
+				element.style.display = 'none';
+			}
+		}
+	};
+	
+	this.setHashParam  = function(key, value)
+	{
+        if ("0" !== this.remove_hash ||
+			window.navigator.userAgent.indexOf("Edge") > -1	//disable hash for Microsoft Edge
+		) {
+			return;
+		}
+        
+		var params = this.getUrlParam();
+		var hash = '';
+		if (value == null) {
+			delete params[key];
+		} else {
+			params[key] = value;
+		}
+			
+		var i = 0;
+		for (param in params) {
+			hash += param + '=' + params[param] + '&';
+			i++;
+		}
+        window.location.replace(window.location.href.split('#')[0] + '#' + hash);
+	};
+	
+	
+	this.getUrlParam = function(param, type)
+	{
+	    var hashParams = {};
+	    var e,
+	        a = /\+/g,  // Regex for replacing addition symbol with a space
+	        r = /([^&;=]+)=?([^&;]*)/g,
+	        d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+	        
+	    var s = window.location.hash;
+	    
+	    if (type == 'url') {
+	    	s = window.location.search;
+	    }     
+	    q = s.substring(1);
+
+	    while (e = r.exec(q))
+	       hashParams[d(e[1])] = d(e[2]);
+	    
+	    if (typeof param == "undefined") {
+	    	return hashParams;
+	    } else {
+	    	return hashParams[param];
+	    }
+	};
+	
+	
+	/*
+	 * Return true if scrolling down;
+	 */
+	this.getDirection = function()
+	{
+		var diff = (document.viewport.getScrollOffsets().top > this.previousTop);
+		return diff;
+	};
+	
+	this.setUrl = function(url) 
+	{
+		this.url = url;
+	};
+	
+	this.getLoadingPlaceholder = function(direction, page)
+	{
+		var p = parseInt(page);
+		
+		if (p <=0) {
+			return;
+		}
+		
+		var tmpElement = document.getElementById('amscroll-page-' + p);
+		
+		if (!tmpElement) {
+			return null;	
+		}
+		
+		if (this.actionMode == 'button') {
+			if ($(tmpElement).hasClassName('loading') == false && $(tmpElement).hasClassName('loaded') == false && (this.ignoreLoaderSetFlag || !this.loaderSet)) {
+				if($$('.amscroll-load-button').length > 0){
+					return null;
+				}
+				$(tmpElement).addClassName('loading');
+				
+				tmpElement.innerHTML = '<input type="button" class="amscroll-load-button" style="' + this.loadNextStyle + '" onclick="amscroll_object.loadNextPage(' + p + ');" value="' + this.loadingTextButton + '" />';
+				this.loaderSet = true;
+				
+				if (this.pageNumbers == 1) {
+        			$('amscroll-page-num-' + p).setStyle({display: 'block'});
+        		}
+			} 
+			return tmpElement;
+		}
+		
+		if ($(tmpElement) && ($(tmpElement).hasClassName('loaded') ||  $(tmpElement).hasClassName('loading'))) {
+			return null;
+		}
+		
+		$(tmpElement).addClassName('loading'); 
+				
+		return tmpElement;
+	};
+
+    /*
+     * Load previous pages ir customer go back to category
+     */
+    this.loadPrevPages = function(pageNumber) {
+        if (pageNumber > 2){
+            pageNumber--;
+            this.loadNextPage(pageNumber);
+        }
+    }
+	
+	/*
+	 * Perform ajax action
+	 */
+	this.loadNextPage = function(pageNumber, direction)
+	{
+		
+		/*
+		 * Exceeding amount of pages
+		 */
+		if (pageNumber > this.pagesCount) {
+			return;
+		}
+		
+		/*
+		 * Current object
+		 */
+		var me = this;
+		var url = this.url;
+		var tmpElement = this.getLoadingPlaceholder(direction, pageNumber);
+		
+		if (tmpElement == null) {
+			return;
+		}
+		
+		if (me.pageNumbers == 1) {
+   			$('amscroll-page-num-' + (pageNumber)).setStyle({display: 'block'});
+		}
+		if(tmpElement.parentNode && tmpElement.parentNode.innerHTML.indexOf('amscroll-loading') == -1)
+			tmpElement.innerHTML = '<div class="amscroll-loading" style="background-image: url(' + this.loadingImage + ');">&nbsp;</div>';
+		
+		var params = {
+            is_ajax   : 1,
+            p         : pageNumber,
+            is_scroll : 1};
+				
+		var request = new Ajax.Request(url, {
+            method : 'get',
+            parameters : params,
+            onSuccess: function(response){
+                data = response.responseText;
+                if(!data.isJSON()){
+                    var tmp = document.createElement('div');
+                    tmp.innerHTML = data;
+
+                    if( tmp.select(amscroll_product_container_group).length ){
+                        tmpPage = tmp.select(amscroll_product_container_group).first();
+                    }
+                    else{
+                        $(tmpElement).update("");
+                        console.debug('Observer does not return the JSON.');
+                        return false;
+                    }
+                }
+                else{
+                    data = data.evalJSON();
+                    if(!data.page){
+                        data.page = data.listing;
+                    }
+                    if(!data.page){
+                        data.page = data.productlist;
+                    }
+                    if(!data.page){
+                        $(tmpElement).update("");
+                        console.debug('Observer does not return data.page.');
+                        return false;
+                    }
+
+                    var tmpPage = document.createElement('div');
+                    tmpPage.innerHTML = data.page;
+
+					if (data.amlabel_script) {
+						data.amlabel_script.evalScripts();
+					}
+                }
+                
+                //Uncomment line below in case of any redirects due to js in page code
+                //tmpPage.innerHTML = data.page.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                
+                /*
+                 * Remove toolbar and pagings from received HTML
+                 */
+                var elements = $(tmpPage).getElementsBySelector(amscroll_toolbar);
+                if (elements.length > 0) {
+                	elements[0].remove();
+                }
+                
+                var elements = $(tmpPage).getElementsBySelector(amscroll_toolbar_bottom);
+                if (elements.length > 0) {
+                	elements[0].remove();
+                }
+                
+                $(tmpElement).update($(tmpPage).innerHTML);
+                
+                var actualHeight = $(tmpElement).down(0).getHeight();
+                
+                /*
+                 * Adjust block height
+                 */
+
+               	$(tmpElement).setStyle({height: 'auto'});
+                	
+                	/*
+                	 * Check that current page is not last item
+                	 */
+                	if (pageNumber < this.pagesCount) {
+                		me.frameHeight = actualHeight;
+                	}
+
+            },
+            onFailure: function(){
+                setLocation(url);
+            },
+            onComplete: function() {
+            	
+            	/* Increase amount of loaded pages */
+            	me.loadedPagesNumbers++;
+            	
+            	/* Mark current frame as "loaded" */
+            	$(tmpElement).addClassName('loaded');
+            	
+            	/* Bind click on any link or button within received frame */
+            	me.bindClick();
+            	
+            	amscroll_external();
+            	
+            	me.loaderSet = false;
+            	
+            }
+        });
+
+		this.loadPrevPages(pageNumber);
+	};
+	
+	this.bindClick = function() {
+		var me = this;
+		$$(amscroll_product_container + ' a, ' + amscroll_product_container + ' input').each(function(e){
+            e.onclick = function(){
+                me.setHashParam('external', 1);
+        }});
+	};
+	
+	
+	/*
+	 * Initialize progress bar (if required)
+	 */
+	this.getNavBarElement = function() {
+		
+		var progressbar = this.progressbar;
+		if (progressbar.enabled == 0) {
+			return null;
+		}
+		if (this.navBarElement == null) {
+			this.navBarElement = new Element('div', { 
+				'class': 'amscroll-navbar', 
+				'id' : 'amscroll-navbar',
+				'style' : progressbar.offset
+				}).update('');
+			
+			$(this.navBarElement).setStyle({
+				'width' : progressbar.width,
+				'position' : 'fixed',
+				'background' : progressbar.background
+			});
+			
+			$(document.body).insert(this.navBarElement);
+		} 
+		return this.navBarElement;
+	};
+	
+	this.handleScroll = function() {
+		var direction = this.getDirection();
+		if (document.viewport) {
+	        var top = document.viewport.getScrollOffsets().top;       
+	        
+	        	if (top == 0) {
+	        		top = 1;
+	        	}
+
+	        	var currentPage  = this.getCurrentPage();
+	        	
+	        	this.setHashParam('page', currentPage);
+	       	
+	       	if (this.pagesCount > 0) {       	
+	       		this.renderPaginator(currentPage);
+	       	}        
+	       	if (!this.getUrlParam('external')) {
+	        	this.setHashParam('top', top);
+	       	}
+		}
+		if (typeof amshopby_working == 'undefined' || amshopby_working == false) {
+		    if (this.actionMode == 'auto') {
+			    
+		    	if (this.shouldLoadNextPage(currentPage)) { 
+		    		this.loadNextPage(currentPage);
+		    	}
+		    	
+		    	if (this.shouldLoadNextPage(currentPage + 1)) {
+		    		this.loadNextPage(currentPage + 1);
+		    	}
+		    	if (this.getDirection() == false) {
+			    	if (this.shouldLoadNextPage(currentPage - 1)) {
+			    		this.loadNextPage(currentPage - 1);
+			    	}
+		    	}
+		    }
+		    if (this.actionMode == 'button') {
+		    	if (this.shouldLoadNextPage(currentPage)) { 
+		    		this.getLoadingPlaceholder(true, currentPage);
+		    	}
+		    	
+		    	if (this.shouldLoadNextPage(currentPage + 1)) {
+		    		this.getLoadingPlaceholder(true, currentPage + 1);
+		    	}
+		    	if (this.getDirection() == false) {
+		    		if (this.shouldLoadNextPage(currentPage - 1)) {
+		    			this.getLoadingPlaceholder(false, currentPage - 1);
+		    		}
+		    	}
+		    	
+		    }
+		}
+	    this.previousTop = top;
+	}
+	
+	this.getCurrentPage = function() {
+		var currentPage = amscroll_params.page;
+		var top = document.viewport.getScrollOffsets().top;       
+		 
+		if (this.getUrlParam('external')) {
+    		if (this.getUrlParam('page')) {
+    			currentPage = parseInt(this.getUrlParam('page'));
+    		} else {
+    			currentPage = parseInt(this.page);
+    		}
+    	} else {
+    		currentPage = parseInt(Math.ceil(top/this.getFrameHeight()));
+    	}
+    	currentPage = parseInt(amscroll_params.page) + parseInt(currentPage);
+		return currentPage;
+	}
+	
+	this.getPagesCount = function() {
+        var ampager = $('am-pager-count'); /*get page count from our observer*/
+        if(ampager) {
+            return parseInt(ampager.innerHTML);
+        }
+
+		var selector = 'div.pager p.amount, div.sorter p.amount';
+        var pager = $$(selector);
+
+		if (pager[0]) {
+			var str = pager[0].innerHTML;
+			var re = /\D*(\d+)\D*(\d+)\D*(\d+)/;
+			var result = re.exec(str);
+			if (result && result.length == 4) {
+				if (result[3] > 0 && result[2] > 0) {				
+					return Math.ceil(parseInt(result[3])/parseInt(result[2])); 
+				}
+			}
+		}
+		else if($$('div.pager li').length > 1){
+			return $$('div.pager li').length-1;
+		}
+		return 1;
+	}
+	
+}
+
+function amscroll_external()
+{
+	 //add here all external scripts for page reloading
+	if (typeof AmAjaxObj != 'undefined') {
+		AmAjaxShoppCartLoad('button.btn-cart');
+	}
+	
+	if (typeof setGridItemsEqualHeight != 'undefined') {
+        mysetGridItemsEqualHeight(jQuery);
+	}
+
+	if (typeof amlabel_init == 'function') {
+		amlabel_init();
+	}
+
+	if (typeof ConfigurableSwatchesList != 'undefined') {
+		ConfigurableSwatchesList.init();
+		setTimeout(function(){
+			$j(document).trigger('product-media-loaded', ConfigurableMediaImages);
+		}, 1000);
+	}
+}
+function mysetGridItemsEqualHeight($)
+{
+    //add hover button
+    var startHeight;
+    var bpad;
+    if($('.category-products-grid .display-onhover')) {
+        gridItemsEqualHeightApplied = true;
+        $('.category-products-grid').on('mouseenter', '.item', function () {
+
+            if ($(window).width() >= 320) {
+
+                if (gridItemsEqualHeightApplied === false) {
+                    //return false;
+                }
+
+                startHeight = $(this).height();
+                $(this).css("height", "auto"); //Release height
+                $(this).find(".display-onhover").fadeIn(400, "easeOutCubic"); //Show elements visible on hover
+                var h2 = $(this).height();
+
+                ////////////////////////////////////////////////////////////////
+                var addtocartHeight = 0;
+                var addtolinksHeight = 0;
+
+                //addtocartHeight = $(this).find('.btn-cart').height(); //obsolete
+                var buttonOrStock = $(this).find('.btn-cart');
+                if (buttonOrStock.length == 0) buttonOrStock = $(this).find('.availability');
+                addtocartHeight = buttonOrStock.height();
+
+
+                var h3 = h2 + addtocartHeight + addtolinksHeight;
+                var diff = 0;
+                if (h3 < startHeight) {
+                    $(this).height(startHeight);
+                }
+                else {
+                    $(this).height(h3);
+                    diff = h3 - startHeight;
+                }
+                ////////////////////////////////////////////////////////////////
+
+                $(this).css("margin-bottom", "-78" + "px");
+                //$(this).height("550px");
+
+            }
+        }).on('mouseleave', '.item', function () {
+
+            if ($(window).width() >= 320) {
+
+                //Clean up
+                $(this).find(".display-onhover").stop(true).hide();
+                $(this).css("height", "auto");
+                $(this).css("margin-bottom", "0" + "px");
+            }
+        });
+    }
+
+    //configure sizes
+    var $list = $('.category-products-grid');
+    var $listItems = $list.children();
+
+    var centered = $list.hasClass('centered');
+    var gridItemMaxHeight = 0;
+    $listItems.each(function() {
+
+        $(this).css("height", "auto"); 			var $object = $(this).find('.actions');
+
+        if (centered)
+        {
+            var objectWidth = $object.width();
+            var availableWidth = $(this).width();
+            var space = availableWidth - objectWidth;
+            var leftOffset = space / 2;
+            $object.css("padding-left", leftOffset + "px"); 			}
+
+        var bottomOffset = parseInt($(this).css("padding-top"));
+        if (centered) bottomOffset += 10;
+        $object.css("bottom", bottomOffset + "px");
+
+        if ($object.is(":visible"))
+        {
+            var objectHeight = $object.height();
+            $(this).css("padding-bottom", (objectHeight + bottomOffset) + "px");
+        }
+
+
+        gridItemMaxHeight = Math.max(gridItemMaxHeight, $(this).height());
+    });
+
+    //Apply max height
+    //$listItems.css("height", gridItemMaxHeight + "px");
+    //gridItemsEqualHeightApplied = true;
+
+}
+
+function amscroll_test()
+{
+    if (typeof amscroll_object == 'undefined') {
+        console.debug('amscroll_object is not defined');
+        console.debug('<------------------->');
+    }
+
+    console.debug('amscroll_params');
+    console.debug(amscroll_params);
+    console.debug('<------------------->');
+
+    if (typeof amscroll_object != 'undefined') {
+        console.debug('amscroll pages count');
+        console.debug(amscroll_object.getPagesCount());
+        console.debug($$('div.pager p.amount'));
+        if(amscroll_object.getPagesCount() == 1){
+            console.debug('div.pager p.amount');
+            console.debug($$('div.pager p.amount'));
+            console.debug('<------->');
+
+            console.debug('div.sorter p.amount');
+            console.debug($$('div.pager p.amount'));
+            console.debug('<------->');
+
+            console.debug('is amount?');
+            console.debug($$('.amount'));
+            console.debug('<------->');
+        }
+        console.debug('<------------------->');
+    }
+
+    if (typeof setGridItemsEqualHeight != 'undefined') {
+        console.debug('setGridItemsEqualHeight exits');
+    }
+
+    return 'test complete!'
+}
+
+function amscroll_correct_height(){
+    //correct frameHeight after page load
+    if(typeof amscroll_object == 'undefined') return;
+
+    var orig = $$(amscroll_product_container_group).first();
+	if(!orig) return;
+	var clone = orig.clone(true);
+
+    clone.select("[id^=amscroll]").each(function(element){
+        element.remove();
+    });
+    var parent = orig.parentNode;
+    if(parent){
+        parent.appendChild(clone);
+    }
+
+    scrollHeight = clone.getHeight();
+    if(scrollHeight > 0){
+        amscroll_object.frameHeight = scrollHeight;
+    }
+
+    clone.remove();
+}

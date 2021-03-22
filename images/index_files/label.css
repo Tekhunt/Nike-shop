@@ -1,0 +1,248 @@
+@CHARSET "ISO-8859-1";
+body{;}
+*{ padding: 0px; margin: 0px;}
+/*-------------------------Form search-----------------------*/
+.mw_formsearch{
+	background: #dce7ea;
+	border: 1px solid #c2d5dc;
+	padding: 15px 5px;
+	
+	float: left;
+	
+	margin-bottom: 30px;
+	width: 100%;
+}
+#searchform{
+	width: auto;
+	margin: auto;
+}
+.inline {
+    clear: both;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+.mw_formsearch label{
+	
+	font-size: 14px;
+	color: #1e7ec8;
+	text-transform: uppercase;
+	float: left;
+	padding-bottom: 5px;
+	width: 100%;
+}
+
+.mw_formsearch .input_text{
+	border: 1px solid #d1d1d1;
+	float: left;
+	width: 80%;
+    
+	height: 26px;
+	margin-top: 5px;
+    margin-bottom: 5px;
+}
+.mw_formsearch  .mw_btn {
+	background: url(../../images/faq/right-bt-search.gif) no-repeat right;
+	height: 26px;
+	cursor: pointer;
+	border: 1px solid #d1d1d1;    
+	width: 18%;  
+	margin-top: 5px;  margin-bottom: 5px;
+}
+.mw_formsearch  .mw_btn span{
+	color:#FFFFFF;
+	font-weight:bold;
+	text-transform:uppercase;
+	cursor: pointer;
+}
+a.bt_submit, a:hover.bt_submit{
+	background: url(../../images/faq/left-submit.gif) no-repeat left top;
+	clear:both;
+	float:left;
+	height:40px;
+	margin-top:10px;
+	padding-left:33px;
+	text-decoration: none;
+}
+a.bt_submit span, a:hover.bt_submit span{
+	background: url(../../images/faq/right-submit.gif) no-repeat right top;
+	float:left;
+	height:40px;
+	line-height:37px;
+	padding:0 18px 0 10px;
+	color: #444;
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/*---------------------------end form search----------------*/
+
+/*---------------------------faq----------------*/
+.mw_faq{
+	border-bottom:1px solid #E4E7E2;
+	clear:both;
+	margin-bottom:30px;
+	padding-bottom:10px;
+	color: #737373;
+}
+.mw_faq_name{
+	color: #1e7ec8;
+	font-size: 14px;
+	font-weight: normal;
+	padding-bottom: 10px;
+	margin-bottom: 0px;
+	text-transform: uppercase;
+}
+.mw_faq_description {
+	font-size:12px;
+}
+.mw_question {
+	background: url(../../images/faq/bg-question.gif) no-repeat 0% 50%;
+	font-size: 12px;
+	font-weight: normal;
+	padding-left: 15px;
+	margin-bottom: 10px;
+	padding-bottom: 0px;
+	line-height: 20px;
+}
+.mw_question a{
+	text-decoration: none;
+	/*color: #737373;*/
+	font-size: 16px;
+}
+.mw_answer{
+	margin-bottom: 25px;
+	padding-left: 15px;
+}
+.mw_question a:hover{
+	text-decoration: underline;
+	/*color: #2b85ca;*/
+	/*font-size: 12px;*/
+}
+.mw_question_a_selected{
+	background: url(../../images/faq/bg-answer.gif) no-repeat 0% 50%;
+	/*font-size: 12px;*/
+	font-weight: bold;
+	padding-left: 15px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	line-height: 20px;
+}
+.mw_question_a_selected a{
+	color: #0a263c;
+}
+/*---------------------------end faq----------------*/
+#mw_result{
+	clear:both;
+	color:#1E7EC8;
+	float:left;
+	font-size:24px;
+	font-weight:normal;
+	margin-bottom:17px;
+}
+.mw_submit{
+	clear: both;
+	font-size: 12px;
+	
+	color: #737373;
+}
+.mw_submit h4{
+	font-size: 14px;
+	font-weight: normal;
+	color: #1e7ec8;
+	text-transform: capitalize;
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+}
+.mw_submit h4.title{
+	color:#1E7EC8;
+	
+	font-size:14px;
+	font-weight:bold;
+	margin-bottom:0;
+	padding-bottom:15px;
+	text-transform:uppercase;
+}
+.mw_field{
+	clear: both;
+	padding-bottom: 15px;
+}
+.mw_field select{
+	width: 214px;
+}
+.mw_field textarea{
+	width: 465px;
+}
+.mw_code{
+	clear: both;
+}
+.mw_code input{
+	float: left;
+	width: 214px;
+}
+.mw_code img{
+	float: left;
+}
+.box_bt{
+	clear: both;
+	margin-top: 10px;
+	float: left;
+}
+/*.mw_button{
+	background:transparent url(../../images/faq/left-btn.gif) no-repeat scroll left top;
+	border:medium none;
+	display:block;
+	float:left;
+	height:28px;
+	margin:0 6px 0 0;
+	padding-left:10px;
+}
+.mw_button span{
+	background:transparent url(../../images/faq/right-btn.gif) no-repeat scroll right top;
+	color:#FFFFFF;
+	display:block;
+	float:left;
+	font-weight:bold;
+	height:28px;
+	line-height:28px;
+	padding-right:15px;
+	text-transform:capitalize;
+	cursor: pointer;
+	position: relative;
+	top: -1px;
+}*/
+button.mw_button{
+	border:none;
+	background:none;
+	padding:0px;
+	margin:0px;
+}
+button.mw_button span{
+	background:url(../../images/faq/left-btn.gif) no-repeat scroll 0% 0%;
+	padding:0px 0px 0px 15px;
+	display:block;
+	float:left;
+	/*font: normal 12px/28px Arial;*/
+	font: bold 12px/28px Arial;
+	height:28px;
+	color:#FFFFFF;
+}
+button.mw_button span span{
+	background:url(../../images/faq/right-btn.gif) no-repeat scroll 100% 0%;
+	padding:0px 15px 0px 0px;
+	color:#FFFFFF;
+}
+* html .mw_button span{
+	background:transparent url(../../images/faq/right-btn.gif) no-repeat scroll right top;
+	color:#FFFFFF;
+	display:block;
+	float:left;
+	font-weight:bold;
+	height:28px;
+	line-height:28px;
+	padding-right:15px;
+	text-transform:capitalize;
+	cursor: pointer;
+	position: relative;
+	top: 0px;
+}

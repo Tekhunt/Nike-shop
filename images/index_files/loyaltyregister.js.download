@@ -1,0 +1,231 @@
+jQuery(document).ready(function(){
+    checkLoyaltyAddressFields();
+    jQuery('.loy-dob > label').addClass('required');
+    jQuery('.loy-gender label').addClass('required');
+    jQuery('.loy-club label').addClass('required');
+    jQuery('#movedown').on('click', function(){
+        if(!jQuery('#collapseLoyalty .block-title').hasClass('active')){
+            jQuery('#collapseLoyalty .block-title').addClass('active');
+            jQuery('.mvp-optional').show();
+            checkLoyaltyAddressFields();
+            jQuery('#street_1').focus();
+            window.scrollBy(0, 500);
+        }else{
+            jQuery('.mvp-optional').show();
+            checkLoyaltyAddressFields();
+            jQuery('#street_1').focus();
+            window.scrollBy(0, 500);
+        }
+    });
+    jQuery('#closemvp').on('click', function(){
+        if(jQuery('#collapseLoyalty .block-title').hasClass('active')){
+            jQuery('#collapseLoyalty .block-title').removeClass('active');
+            jQuery('.mvp-optional').hide();
+            checkLoyaltyAddressFields();
+            jQuery("#collapseLoyalty input[type=text]").val("");
+            moveRightContent();
+        }else{
+            jQuery('.mvp-optional').hide();
+            checkLoyaltyAddressFields();
+            jQuery("#collapseLoyalty input[type=text]").val("");
+        }
+    });
+    
+    jQuery('#is_subscribed').on('click', function(){
+        if(jQuery(this).is(':checked')){
+            if(!jQuery('#is_subscribed0').is(':checked')){
+                jQuery('#is_subscribed0').attr('checked', true);;
+            }
+        } else {
+            if(jQuery('#is_subscribed0').is(':checked')){
+                jQuery('#is_subscribed0').attr('checked', false);
+            }
+        }
+    });
+    jQuery('#is_subscribed0').on('click', function(){
+        if(jQuery(this).is(':checked')){
+            if(!jQuery('#is_subscribed').is(':checked')){
+                jQuery('#is_subscribed').attr('checked', true);;
+            }
+        } else {
+            if(jQuery('#is_subscribed').is(':checked')){
+                jQuery('#is_subscribed').attr('checked', false);
+            }
+        }
+    });
+    // the contetn on the right moves while scrolling
+    jQuery(window).scroll(moveRightContent);
+    moveRightContent();
+    
+    // Terms popups
+    if ( jQuery( "#mvp_agreement_popup" ).length ) {
+        jQuery('label[for="mvp_agreement"] a').on('click', function(e){
+            e.preventDefault();
+            jQuery('#mvp_agreement_popup').addClass('active');
+        });
+    }
+    if ( jQuery( "#mvp_subscribed_popup" ).length ) {
+        jQuery('label[for="mvp_subscribed"] a').on('click', function(e){
+            e.preventDefault();
+            jQuery('#mvp_subscribed_popup').addClass('active');
+        });
+    }
+    if ( jQuery( "#is_subscribed_popup" ).length ) {
+        jQuery('label[for="is_subscribed0"] a').on('click', function(e){
+            e.preventDefault();
+            jQuery('#mvp_subscribed_popup').addClass('active');
+        });
+        jQuery('label[for="is_subscribed"] a').on('click', function(e){
+            e.preventDefault();
+            jQuery('#mvp_subscribed_popup').addClass('active');
+        });
+    }
+    jQuery('.mvp-popup-inner .close').on('click', function(e){
+        e.preventDefault();
+        jQuery('.mvp-popup-outer').removeClass('active');
+    });
+    
+});
+
+
+
+function checkLoyaltyAddressFields(){
+    if(jQuery('#collapseLoyalty .block-title').hasClass('active')){
+        if(!jQuery('#telephone').hasClass('required-entry')){
+            jQuery('#telephone').addClass('required-entry');
+        }
+        if(!jQuery('#street_1').hasClass('required-entry')){
+            jQuery('#street_1').addClass('required-entry');
+        }
+        if(!jQuery('#street_2').hasClass('required-entry')){
+            jQuery('#street_2').addClass('required-entry');
+        }
+        if(!jQuery('#city').hasClass('required-entry')){
+            jQuery('#city').addClass('required-entry');
+        }
+        if(!jQuery('#zip').hasClass('required-entry')){
+            jQuery('#zip').addClass('required-entry');
+        }
+        if(!jQuery('#country').hasClass('required-entry')){
+            jQuery('#country').addClass('required-entry');
+        }
+        if(!jQuery('#day').hasClass('required-entry')){
+            jQuery('#day').addClass('required-entry');
+        }
+        if(!jQuery('#month').hasClass('required-entry')){
+            jQuery('#month').addClass('required-entry');
+        }
+        if(!jQuery('#year').hasClass('required-entry')){
+            jQuery('#year').addClass('required-entry');
+        }
+        if(!jQuery('#gender').hasClass('required-entry')){
+            jQuery('#gender').addClass('required-entry');
+        }
+        if(!jQuery('#basketball_club').hasClass('required-entry')){
+            jQuery('#basketball_club').addClass('required-entry');
+        }
+        if(!jQuery('#mvp_agreement').hasClass('required-entry')){
+            jQuery('#mvp_agreement').addClass('required-entry');
+        }
+        if(jQuery("input[name='create_address']").val() == 0){
+            jQuery("input[name='create_address']").val(1)
+        }
+        if(jQuery("input[name='default_billing']").val() == 0){
+            jQuery("input[name='default_billing']").val(1)
+        }
+        if(jQuery("input[name='default_shipping']").val() == 0){
+            jQuery("input[name='default_shipping']").val(1)
+        }
+    } else{
+        if(jQuery("input[name='create_address']").val() == 1){
+            jQuery("input[name='create_address']").val(0)
+        }
+        if(jQuery("input[name='default_billing']").val() == 1){
+            jQuery("input[name='default_billing']").val(0)
+        }
+        if(jQuery("input[name='default_shipping']").val() == 1){
+            jQuery("input[name='default_shipping']").val(0)
+        }
+        if(jQuery('#telephone').hasClass('required-entry')){
+            jQuery('#telephone').removeClass('required-entry');
+        }
+        if(jQuery('#street_1').hasClass('required-entry')){
+            jQuery('#street_1').removeClass('required-entry');
+        }
+        if(jQuery('#street_2').hasClass('required-entry')){
+            jQuery('#street_2').removeClass('required-entry');
+        }
+        if(jQuery('#city').hasClass('required-entry')){
+            jQuery('#city').removeClass('required-entry');
+        }
+        if(jQuery('#zip').hasClass('required-entry')){
+            jQuery('#zip').removeClass('required-entry');
+        }
+        if(jQuery('#country').hasClass('required-entry')){
+            jQuery('#country').removeClass('required-entry');
+        }
+        if(jQuery('#day').hasClass('required-entry')){
+            jQuery('#day').removeClass('required-entry');
+        }
+        if(jQuery('#month').hasClass('required-entry')){
+            jQuery('#month').removeClass('required-entry');
+        }
+        if(jQuery('#year').hasClass('required-entry')){
+            jQuery('#year').removeClass('required-entry');
+        }
+        if(jQuery('#gender').hasClass('required-entry')){
+            jQuery('#gender').removeClass('required-entry');
+        }
+        if(jQuery('#basketball_club').hasClass('required-entry')){
+            jQuery('#basketball_club').removeClass('required-entry');
+        }
+        if(jQuery('#mvp_agreement').hasClass('required-entry')){
+            jQuery('#mvp_agreement').removeClass('required-entry');
+        }
+    }
+}
+
+function moveRightContent() {
+    
+    if(jQuery(window).width() > 786)
+    {
+
+        var $content   = jQuery("#desniRegister"),
+            $window    = jQuery(window),
+            $from = jQuery('#header-nav'),
+            $bumper = jQuery('.footer-container'),
+            offset     = $content.offset(),
+            $startPos = 230,
+            bumperPos = $bumper.offset().top,
+            thisHeight = $content.outerHeight();
+        if(thisHeight < (jQuery('.account-create .row').outerHeight() - 50))
+        {
+            if ($window.scrollTop() < $startPos) { 
+                $content.css({
+                    position: 'absolute',
+                    top: 0
+                });
+            } else if ($window.scrollTop() > (bumperPos - (thisHeight + 75))) {
+                $content.css({
+                    top: (bumperPos - thisHeight - $startPos - 125)
+                });
+            } else {
+                $content.css({
+                    
+                    position: 'absolute',
+                    top: ($window.scrollTop() - $startPos )
+                });
+            }
+        } else{
+            $content.css({
+                position: 'relative',
+                top: 'unset',
+                bottom:'unset'
+            });
+        }
+    }
+ }  
+ 
+
+   
+    

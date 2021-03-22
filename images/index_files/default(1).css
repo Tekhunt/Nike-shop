@@ -1,0 +1,254 @@
+.overlay_dialog {
+	background-color: #666666;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+}
+
+.overlay___invisible__ {
+  background-color: #666666;
+	filter:alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+}
+
+.dialog_nw {
+	width: 9px;
+	height: 23px;
+	background: transparent url(default/top_left.gif) no-repeat 0 0;
+}
+
+.dialog_n {
+	background: transparent url(default/top_mid.gif) repeat-x 0 0;
+	height: 23px;
+}
+
+.dialog_ne {
+	width: 9px;
+	height: 23px;
+	background: transparent url(default/top_right.gif) no-repeat 0 0;
+}
+
+.dialog_e {
+	width: 2px;
+	background: transparent url(default/center_right.gif) repeat-y 0 0;
+}
+
+.dialog_w {
+	width: 2px;
+	background: transparent url(default/center_left.gif) repeat-y 0 0;
+}
+
+.dialog_sw {
+	width: 9px;
+	height: 19px;
+	background: transparent url(default/bottom_left.gif) no-repeat 0 0;
+}
+
+.dialog_s {
+	background: transparent url(default/bottom_mid.gif) repeat-x 0 0;
+	height: 19px;
+}
+
+.dialog_se {
+	width: 9px;
+	height: 19px;
+	background: transparent url(default/bottom_right.gif) no-repeat 0 0;
+}
+
+.dialog_sizer {
+	width: 9px;
+	height: 19px;
+	background: transparent url(default/sizer.gif) no-repeat 0 0;
+	cursor:se-resize;
+}
+
+.dialog_close {
+	width: 14px;
+	height: 14px;
+	background: transparent url(default/close.gif) no-repeat 0 0;
+	position:absolute;
+	top:5px;
+	left:8px;
+	cursor:pointer;
+	z-index:2000;
+}
+
+.dialog_minimize {
+	width: 14px;
+	height: 15px;
+	background: transparent url(default/minimize.gif) no-repeat 0 0;
+	position:absolute;
+	top:5px;
+	left:28px;
+	cursor:pointer;
+	z-index:2000;
+}
+
+.dialog_maximize {
+	width: 14px;
+	height: 15px;
+	background: transparent url(default/maximize.gif) no-repeat 0 0;
+	position:absolute;
+	top:5px;
+	left:49px;
+	cursor:pointer;
+	z-index:2000;
+}
+
+.dialog_title {
+	float:left;
+	height:14px;
+	font-family: Tahoma, Arial, sans-serif;
+	font-size:12px;
+	text-align:center;
+	width:100%;
+	color:#000;
+}
+
+.dialog_content {
+	overflow:auto;
+	color: #DDD;
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 10px;
+	background-color:#123;
+}
+
+.top_draggable, .bottom_draggable {
+  cursor:move;
+}
+
+.status_bar {
+  font-size:12px;
+}
+.status_bar input{
+  font-size:12px;
+}
+
+.wired_frame {
+	display: block;
+  position: absolute;
+  border: 1px #000 dashed;
+}
+#overlay_modal.overlay_alert{
+background: #000;
+    opacity: 0.5;
+    z-index: 10000!important;
+}
+#modal_dialog_message {
+	background:#fff;
+}
+
+/* DO NOT CHANGE THESE VALUES*/
+.dialog {
+	display: block;
+	position: absolute;
+	
+}
+
+.dialog table.table_window  {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+	margin: 0px;
+	padding:0px;
+}
+
+.dialog table.table_window td , .dialog table.table_window th {
+  padding: 0;
+}
+
+.dialog .title_window {
+  -moz-user-select:none;
+}
+.dialog{
+	background: #ffffff;
+	height: auto!important;
+	position: fixed;
+	display: block;
+	z-index:10001!important;
+	top:210px!important;
+}
+.alert_content .buttons-set{
+	margin: 0;
+}
+.alert_message h4{
+    border-bottom: none;
+    padding: 0 20px 5px;
+    color: #505050;
+}
+.alert_message a{
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+    font-weight: bold;
+}
+#shipestimate-values pre{
+	display: inline;
+}
+.close{
+	position: absolute;
+	right: 0px;
+	width: 16px;
+	z-index: 100;
+	font-size: 20px;
+	top: -3px;
+}
+.buttons-set button.button{
+	float: left;
+	margin: 0;
+}
+#calctransport {
+	display: none;
+}
+.alert_message .adress{
+	padding-left: 20px;
+	padding-top: 5px;
+}
+.alert_message .adress-title{
+	padding-bottom: 10px;
+}
+.input-boxes .country-input, .state-input{
+	padding-bottom: 10px;
+
+}
+.adress .buttons-set{
+	padding-bottom: 10px;
+	border: none;
+	background-color: #fff;
+}
+.panel .estimate-cost,
+.panel .adress .buttons-set{
+	padding-bottom: 10px;
+	border: none;
+	background:none;
+}
+.panel .adress .buttons-set .button{
+	background:#31a4e0;
+	color:#fff;
+}
+.car-cost{
+	background: url('../../shipestimation/71222.png') no-repeat center left;
+	padding-top: 10px;
+}
+.shipping-estimate a{
+	background: url('../../shipestimation/71222.png') no-repeat center left;
+	padding: 10px 0 10px 45px;
+}
+.estimate-cost{
+	padding-left: 20px;
+	background-color: #ffffff;
+	padding-bottom: 10px;
+}
+.input-box select{
+	width: 65%;
+}
+.input-box input{
+	width: 63.5%;
+}
+.shipping-estimate{
+	margin-top: 35px;
+}
+.city{
+	padding-bottom: 10px;
+}

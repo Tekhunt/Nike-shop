@@ -1,0 +1,393 @@
+    * {
+        padding: 0px;
+        margin: 0px;
+        list-style-type: none;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+    
+    body {
+        height: 100%;
+        width: 100%;
+        background-color: #f5f7f6;
+    }
+    
+    .content {
+        border: 4px solid black;
+        border-radius: 8px;
+        border-width: thick;
+        margin: 150px 150px;
+        width: 80%;
+        height: 650px;
+        display: flex;
+        justify-content: space-between;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .twenty {
+        width: 25%;
+        height: 100%;
+        background-color: black;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .twenty p a img {
+        width: 45px;
+    }
+    
+    .twenty p {
+        margin: 18px;
+    }
+    
+    .bottom {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        width: 100%;
+        padding-top: 10%;
+        padding-right: 40%;
+        margin-top: 172%;
+    }
+    
+    .b1 a {
+        color: white;
+    }
+    
+    .nike {
+        margin-left: 16px;
+    }
+    
+    .eighty {
+        background-color: white;
+        width: 75%;
+        padding-right: 0px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .nav-bar {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: auto;
+        height: 80px;
+    }
+    
+    .targets {
+        width: 65%;
+    }
+    
+    .target-container {
+        display: flex;
+        padding-left: 30%;
+        margin-top: 25px;
+    }
+    
+    .tag {
+        padding-right: 25px;
+        color: black;
+        font-size: 12px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+    
+    .icon {
+        width: 25%;
+    }
+    
+    .i-container {
+        display: flex;
+        padding-left: 60%;
+        margin-top: 25px;
+    }
+    
+    .icon1 {
+        padding-right: 30px;
+        color: black;
+    }
+    
+    .icon2 {
+        color: black;
+    }
+    
+    .dark {
+        width: 10%;
+        background-color: black;
+        border-radius: 0 0 0 6px;
+        -webkit-border-radius: 0 0 0 6px;
+        -moz-border-radius: 0 0 0 6px;
+        -ms-border-radius: 0 0 0 6px;
+        -o-border-radius: 0 0 0 6px;
+    }
+    
+    .menu {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 36%;
+        margin-top: 25px;
+    }
+    
+    .fa-bars {
+        color: white;
+    }
+    
+    .bottom-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .fourty {
+        width: 38.5%;
+        height: 100%;
+    }
+    
+    .sixty {
+        width: 61.5%;
+        height: 100%;
+    }
+    
+    .ball-shoe {
+        margin-top: 25px;
+        margin-bottom: 35px;
+        font-weight: 700;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .lebron16 {
+        /*session4font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    */
+        font-family: Helvetica, sans-serif;
+        font-size: 40px;
+        width: 100%;
+        display: inline-block;
+        transform: scale(2.4, 1.5);
+        -webkit-transform: scale(2.4, 1.5);
+        -moz-transform: scale(2.4, 1.5);
+        -ms-transform: scale(2.4, 1.5);
+        -o-transform: scale(2.4, 1.5);
+        margin-left: 68.8%;
+        margin-bottom: 30px;
+    }
+    
+    .para {
+        line-height: 1.9;
+        font-family: cursive, sans-serif;
+    }
+    
+    .now {
+        margin-top: 20px;
+        width: 125px;
+        height: 30px;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+        background-color: black;
+    }
+    
+    .now .shop {
+        color: rgb(153, 140, 125);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        width: 95%;
+        margin: auto;
+        align-items: flex-start;
+        margin-right: 30%;
+    }
+    
+    .col {
+        background-color: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+        width: 20%;
+        margin-top: 20px;
+        box-shadow: 0 0 .5px .5px rgb(187, 182, 182);
+    }
+    
+    .item1 {
+        background-image: url(images/l16-1.jfif);
+        background-repeat: no-repeat;
+        background-size: 100% 70%;
+        width: 100%;
+        height: 150px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .item2 {
+        background-image: url(images/j1.jfif);
+        background-repeat: no-repeat;
+        background-size: 100% 70%;
+        width: 100%;
+        height: 150px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .item3 {
+        background-image: url(images/j3.jfif);
+        background-repeat: no-repeat;
+        background-size: 100% 70%;
+        width: 100%;
+        height: 150px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .item4 {
+        background-image: url(images/ji.jfif);
+        background-repeat: no-repeat;
+        background-size: 100% 70%;
+        width: 100%;
+        height: 150px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .col:hover {
+        transform: scale(1.2, 1.2);
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+        box-shadow: 0 0 5px 3px #d1dad1;
+    }
+    
+    .new {
+        margin-top: 60px;
+        background-color: black;
+    }
+    
+    .new a {
+        color: white;
+    }
+    
+    .more {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        width: 125px;
+        height: 50px;
+        background-color: black;
+        margin-left: 40%;
+        margin-top: 30px;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .more .shop {
+        color: rgb(153, 140, 125);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 400;
+    }
+    
+    .more .shop:hover {
+        color: White;
+    }
+    
+    .now .shop:hover {
+        color: White;
+    }
+    
+    .amt {
+        opacity: .3;
+    }
+    
+    .red {
+        color: rgb(182, 15, 15);
+    }
+    
+    .b1:hover {
+        transform: scale(1.2, 1.2);
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+    }
+    
+    .menu:hover {
+        transform: scale(1.2, 1.2);
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+    }
+    
+    .icon1:hover {
+        transform: scale(1.2, 1.2);
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+    }
+    
+    .icon2:hover {
+        transform: scale(1.2, 1.2);
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+    }
+    
+    .name {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: small;
+        font-weight: 500;
+        font-size: 15px;
+        font-weight: 700;
+        font-family: "PT Sans", sans-serif;
+    }
+    
+    .sun {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient( 62% 28%, #f07654 30%, yellow);
+        box-shadow: 0px 0px 30px -35px #eb910b, inset 0px 0px 20px 3px rgba(0, 0, 0, .3);
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        position: absolute;
+        top: 40%;
+        left: 20%;
+        z-index: 2;
+    }
+    
+    .air {
+        height: 370px;
+        width: 530px;
+        position: absolute;
+        top: 35%;
+        left: 18%;
+        z-index: 4;
+        transform: rotate(30deg);
+        background-image: url(images/lebj-removebg.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+    
+    .air img {
+        width: 420px;
+        height: 150ppx;
+    }
+    
+    #f07654#f5df2e rgb(222, 245, 13) #eb910b)

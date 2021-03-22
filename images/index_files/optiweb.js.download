@@ -1,0 +1,101 @@
+function createCookie(name, value, days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+function ow_easter(){
+    var quotes = new Array("OG63W", "ZKBDH", "4GR67", "JNV3I", "6MKO0", "UXJ2P", "19O3D", "LYTJ9", "60L0W", "G7RS7", "29R6J", "T5ONO", "U9Q3Y", "3M8DX", "MMFZT", "LXNT1", "V2DJL", "C4R33", "JF0B4", "2RCGQ", "R04CL", "T3BOK", "3LMS3", "NYHIN", "97D8X", "LF6W7", "7NX0I", "0889B", "SZ09A", "BTZ6J", "610UH");
+    randno = quotes[Math.floor( Math.random() * quotes.length )];
+    // jQuery('.ow_popup_promotion').text( randno );
+    jQuery('.ow_popup_promotion').html("<h2>"+Translator.translate('Dobra izbira!')+"</h2>"+Translator.translate('Spodaj je vaša koda za popust, ki jo kopirajte in nato prilepite v košarici')+":<br><h3>"+randno+"</h3>");
+    createCookie('ow_easter_eggs',1,14);
+}
+
+jQuery( document ).ready(function() {
+    jQuery( ".ow_skrit a" ).click(function( event ) {
+        event.preventDefault();
+    });
+});
+
+jQuery( document ).ready(function() {
+    if (jQuery(window).width() < 480) {
+        jQuery(".ow_product_desc").detach().appendTo('.product-primary-column.product-shop')
+
+    }
+});
+
+// checkout field validation
+jQuery( document ).ready(function() {
+    
+    var fields = ['firstname', 'lastname', 'email', 'telephone', 'street1', 'region_id', 'country_id', 'city', 'postcode'];
+    var fields2 = ['firstname', 'lastname', 'telephone', 'street1', 'region_id', 'country_id', 'city', 'postcode'];
+
+        fields.each( function(fld){
+            if(document.getElementById('billing:' + fld)){
+                Validation.validate($('billing:' + fld));
+                fields.map( function (fld) {
+                    $('billing:' + fld).observe('change', function(e){
+                        Validation.validate($('billing:' + fld));
+                    });
+
+                });
+            }
+            if(document.getElementById('shipping:' + fld)){
+                Validation.validate($('shipping:' + fld));
+                fields2.map( function (fld) {
+                    $('shipping:' + fld).observe('change', function(e){
+                        Validation.validate($('shipping:' + fld));
+                    });
+                });
+            }
+        });
+});
+
+/*
+jQuery(function() {
+
+    var $sidebar   = jQuery(".category-shoes .grid-col2-sidebar"),
+        $window    = jQuery(window),
+        offset     = $sidebar.offset(),
+        topPadding = 50;
+
+    $window.scroll(function() {
+        if ($window.scrollTop() > offset.top) {
+            $sidebar.stop().animate({
+                marginTop: $window.scrollTop() - offset.top + topPaddingcurrent
+            });
+        } else {
+            $sidebar.stop().animate({
+                marginTop: 0
+            });
+        }
+    });
+
+});*/
+
+
+jQuery( document ).ready(function() {
+    jQuery( ".block-layered-nav .toggle-content > dl > dt" ).click(function() {
+        var $next = jQuery(this).next();
+        var $nextSpan = jQuery(this).find('span');
+        if(!$next.is(':visible') ) {
+            $next.slideDown("fast", function (){});
+            $nextSpan.text("-");
+        } else {
+            $next.slideUp("fast", function (){});
+            $nextSpan.text("+");
+        }
+    });
+
+    jQuery( ".block-layered-nav .toggle-content > dl > dd" ).each(function() {
+        if(jQuery(this).is(':visible') ) {
+            var $previous = jQuery(this).prev();
+            var $prevSpan = $previous.find('span');
+            $prevSpan.text("-");
+        }
+    });
+});

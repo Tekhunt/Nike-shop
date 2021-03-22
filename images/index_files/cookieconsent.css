@@ -1,0 +1,55 @@
+#mntsinfotech-cookie-bar {
+    display: none;
+    direction: ltr;
+    color: #ddd;
+    min-height: 30px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 99999;
+    padding:6px 20px 4px;
+    background-color: #464646;
+    text-align:left;
+}
+#mntsinfotech-cookie-bar a, a:hover {
+/*     color: #fff;
+	text-decoration:underline; */
+}
+button#mntsinfotechCookie {
+    margin:0 20px;
+}
+#mntsinfotech-cookie-bar .mnts_btn{
+        background-color: #31a4e0;
+    color: #fff;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+	border:none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 28px;
+    letter-spacing: normal;
+    line-height: 18px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    text-align: center;
+    text-indent: 0px;
+    text-transform: none;
+    vertical-align: middle;
+    white-space: pre;
+    width: 66px;
+    word-spacing: 0px;
+    writing-mode: lr-tb;
+}
